@@ -5,9 +5,9 @@ import {
     Types,
     TournamentLeaderboardEntry,
     TournamentPlayerEntry,
-} from "../data/Types.ts";
+} from "../data/types.ts";
 import { tournaments, winners } from "../data/scores.ts";
-import {players} from "../data/Players.ts";
+import {players} from "../data/players.ts";
 
 export function useTournamentData() {
     function getPlayerById(id: number): Player | undefined {

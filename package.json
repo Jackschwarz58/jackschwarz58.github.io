@@ -10,8 +10,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mantine-bites/lightbox": "^2.0.0",
     "@mantine/core": "^9.2.1",
     "@mantine/hooks": "^9.2.1",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^6.26.1"

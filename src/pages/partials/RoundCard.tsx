@@ -1,5 +1,5 @@
 import {Badge, Card, Group, Table, Text} from "@mantine/core";
-import {Round} from "../../data/Types.ts";
+import {Round} from "../../data/types.ts";
 import {useTournamentData} from "../../hooks/useTournamentData.ts";
 
 interface RoundCardProps {

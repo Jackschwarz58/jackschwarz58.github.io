@@ -1,4 +1,5 @@
 import '@mantine/core/styles.css'
+import '@mantine-bites/lightbox/styles.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'

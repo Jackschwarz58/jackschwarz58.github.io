@@ -3,7 +3,7 @@ import {tournaments} from "../../data/scores.ts";
 import {Anchor, Badge, Card, Group, SimpleGrid, Stack, Table, Text, Title} from "@mantine/core";
 import StatCard from "./StatCard.tsx";
 import {Link} from "react-router-dom";
-import {players} from "../../data/Players.ts";
+import {players} from "../../data/players.ts";
 
 export default function SummerTournaments() {
   const { getTournamentWinners, getPlayerWins } = useTournamentData()

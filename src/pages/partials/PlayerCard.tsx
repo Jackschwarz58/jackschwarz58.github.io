@@ -1,4 +1,4 @@
-import { Player } from "../../data/Types.ts"
+import { Player } from "../../data/types.ts"
 import { useTournamentData } from "../../hooks/useTournamentData.ts"
 import { Anchor, Avatar, Badge, Card, Group, SimpleGrid, Stack, Table, Text } from "@mantine/core"
 import { Link } from "react-router-dom"

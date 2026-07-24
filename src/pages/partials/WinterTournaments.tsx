@@ -1,7 +1,7 @@
 import {tournaments} from "../../data/winterScores.ts";
 import {Anchor, Badge, Card, Group, SimpleGrid, Stack, Table, Text, Title} from "@mantine/core";
 import StatCard from "./StatCard.tsx";
-import {players} from "../../data/Players.ts";
+import {players} from "../../data/players.ts";
 import {useWinterTournamentData} from "../../hooks/useWinterTournamentData.ts";
 import {Link} from "react-router-dom";
 

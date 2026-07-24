@@ -8,6 +8,7 @@ const links = [
   { to: '/statistics', label: 'Tournaments' },
   { to: '/leaderboard', label: 'Leaderboard' },
   { to: '/players', label: 'Players' },
+  { to: '/gallery', label: 'Gallery' },
   { to: '/media', label: 'Media' },
 ]
 

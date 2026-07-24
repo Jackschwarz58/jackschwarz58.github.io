@@ -1,7 +1,7 @@
 import {SimpleGrid, Space, Stack, Title} from "@mantine/core";
 import {tournaments} from "../data/scores.ts";
 import {tournaments as winterTournaments} from "../data/winterScores.ts";
-import {players} from "../data/Players.ts";
+import {players} from "../data/players.ts";
 
 export default function About() {
   const tournamentCount = tournaments.length;

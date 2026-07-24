@@ -9,6 +9,7 @@ import Tournaments from "./pages/Tournaments.tsx";
 import Media from "./pages/Media.tsx";
 import WinterTournament from "./pages/WinterTournament.tsx";
 import About from "./pages/About.tsx";
+import Gallery from "./pages/Gallery.tsx";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/tournament/:id" element={<Tournament />} />
           <Route path="/winter-tournament/:id" element={<WinterTournament />} />
           <Route path="/media" element={<Media />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </AppShell.Main>
     </AppShell>

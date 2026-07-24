@@ -1,4 +1,4 @@
-import {Types, Winners} from "./Types.ts";
+import {Types, Winners} from "./types.ts";
 
 export const tournaments: Types[] = [
   {
