@@ -51,7 +51,7 @@ export default function Tournament() {
             <Text size="sm" c="dimmed">The Links Golf Course - Oklahoma City</Text>
           </div>
 
-          <div>
+          <div style={{ marginTop: '2rem' }}>
             <Title order={4} mb="sm">🏆 Winners</Title>
             <Flex gap="md">{winners.map((winner) => (
                 <Text key={winner.id} size="xl">{winner.name}</Text>
