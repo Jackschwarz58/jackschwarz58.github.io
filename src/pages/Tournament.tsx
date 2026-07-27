@@ -4,12 +4,14 @@ import {
 } from '@mantine/core'
 import {useTournamentData} from "../hooks/useTournamentData.ts";
 import RoundCard from "./partials/RoundCard.tsx";
+import PairingRoundCard from "./partials/PairingRoundCard.tsx";
 
 export default function Tournament() {
   const {
     getTournamentById,
     getTournamentLeaderboard,
     getTournamentWinners,
+    getTournamentPairings,
   } = useTournamentData()
   const { id } = useParams<{ id: string }>()
   const tournament = id ? getTournamentById(id) : undefined
@@ -25,6 +27,7 @@ export default function Tournament() {
 
   const board = getTournamentLeaderboard(tournament.id)
   const winners = getTournamentWinners(tournament.year)
+  const pairingBoard = getTournamentPairings(tournament.year)
 
   return (
     <Stack gap="xl" style={{ margin: '1.5rem' }}>
@@ -46,7 +49,44 @@ export default function Tournament() {
       </div>
 
       <div>
-        <Title order={4} mb="sm">Leaderboard</Title>
+        <Title order={4} mb="sm">Scramble Pairings</Title>
+        {pairingBoard.length > 0 ? (
+          <Card shadow="sm" padding={0} radius="md" withBorder>
+            <Table striped highlightOnHover withColumnBorders>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>Pos</Table.Th>
+                  <Table.Th>Pairing</Table.Th>
+                  <Table.Th>Day 2</Table.Th>
+                  <Table.Th>Day 3</Table.Th>
+                  <Table.Th>Total</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {pairingBoard.map((pairing, i) => (
+                    <Table.Tr key={pairing.id}>
+                      <Table.Td>
+                        {i === 0 ? <Badge color="yellow">1st</Badge>
+                            : i === 1 ? <Badge color="gray">2nd</Badge>
+                                : i === 2 ? <Badge color="orange">3rd</Badge>
+                                    : <Text size="sm">{i + 1}</Text>}
+                      </Table.Td>
+                      <Table.Td fw={600}>{pairing.players.map((p) => p.name).join(' & ')}</Table.Td>
+                      <Table.Td>{pairing.scores[0] ?? '—'}</Table.Td>
+                      <Table.Td>{pairing.scores[1] ?? '—'}</Table.Td>
+                      <Table.Td fw={700}>{pairing.total ?? '—'}</Table.Td>
+                    </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </Card>
+        ) : (
+          <Text c="dimmed" size="sm">No Data (Thanks Trevor)</Text>
+        )}
+      </div>
+
+      <div>
+        <Title order={4} mb="sm">Round 1 (Qualifying)</Title>
         <Card shadow="sm" padding={0} radius="md" withBorder>
           <Table striped highlightOnHover withColumnBorders>
             <Table.Thead>
@@ -61,19 +101,19 @@ export default function Tournament() {
             </Table.Thead>
             <Table.Tbody>
               {board.map((player, i) => (
-                <Table.Tr key={player.id}>
-                  <Table.Td>
-                    {i === 0 ? <Badge color="yellow">1st</Badge>
-                      : i === 1 ? <Badge color="gray">2nd</Badge>
-                      : i === 2 ? <Badge color="orange">3rd</Badge>
-                      : <Text size="sm">{i + 1}</Text>}
-                  </Table.Td>
-                  <Table.Td fw={600}>{player.name}</Table.Td>
-                  <Table.Td>{player.handicap}</Table.Td>
-                  <Table.Td fw={700}>{player.totalGross}</Table.Td>
-                  <Table.Td>{player.avg}</Table.Td>
-                  <Table.Td>{player.best}</Table.Td>
-                </Table.Tr>
+                  <Table.Tr key={player.id}>
+                    <Table.Td>
+                      {i === 0 ? <Badge color="yellow">1st</Badge>
+                          : i === 1 ? <Badge color="gray">2nd</Badge>
+                              : i === 2 ? <Badge color="orange">3rd</Badge>
+                                  : <Text size="sm">{i + 1}</Text>}
+                    </Table.Td>
+                    <Table.Td fw={600}>{player.name}</Table.Td>
+                    <Table.Td>{player.handicap === -1 ? '-' : player.handicap}</Table.Td>
+                    <Table.Td fw={700}>{player.totalGross}</Table.Td>
+                    <Table.Td>{player.avg}</Table.Td>
+                    <Table.Td>{player.best}</Table.Td>
+                  </Table.Tr>
               ))}
             </Table.Tbody>
           </Table>
@@ -86,6 +126,26 @@ export default function Tournament() {
           {tournament.rounds.map((round) => (
             <RoundCard key={round.id} round={round} />
           ))}
+          {pairingBoard.length > 0 && (
+            <>
+              <PairingRoundCard
+                label="Round 2 (Scramble)"
+                date={tournament.rounds[0].date}
+                course={tournament.rounds[0].course}
+                par={tournament.rounds[0].par}
+                dayIndex={0}
+                pairings={pairingBoard}
+              />
+              <PairingRoundCard
+                label="Round 3 (Scramble)"
+                date={tournament.rounds[0].date}
+                course={tournament.rounds[0].course}
+                par={tournament.rounds[0].par}
+                dayIndex={1}
+                pairings={pairingBoard}
+              />
+            </>
+          )}
         </Stack>
       </div>
     </Stack>

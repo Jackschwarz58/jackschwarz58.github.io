@@ -42,7 +42,7 @@ export function useWinterTournamentData() {
   }
 
   /** All-time stats for one player across every tournament. */
-  function getAllTimeStats(playerId: number): AllTimeStats {
+  function getAllTimeStats(player: Player): AllTimeStats {
     const tournamentsPlayed: TournamentPlayerEntry[] = []
     let totalRounds = 0
     let totalGross = 0
@@ -51,7 +51,7 @@ export function useWinterTournamentData() {
 
     for (const t of tournaments) {
       const scores = t.rounds
-        .map((r) => r.scores[playerId])
+        .map((r) => r.scores[player.id])
         .filter((s): s is number => s !== undefined && s !== -1)
       if (!scores.length) continue
 
@@ -79,23 +79,19 @@ export function useWinterTournamentData() {
   /** All-time leaderboard across every tournament, sorted by avg score per round. */
   function getAllTimeLeaderboard(): AllTimeLeaderboardEntry[] {
     return players
-      .map((player) => ({ ...player, ...getAllTimeStats(player.id) }))
+      .map((player) => ({ ...player, ...getAllTimeStats(player) }))
       .filter((p) => p.tournamentsCount > 0)
       .sort((a, b) => parseFloat(a.avg ?? '999') - parseFloat(b.avg ?? '999'))
   }
 
   /** Winners of a specific tournament by year, from the winners array. */
   function getTournamentWinners(year: number): Player[] {
-    const entry = winners.find((w) => w.year === year)
-    if (!entry) return []
-    return entry.players
-      .map((id) => getPlayerById(id))
-      .filter((p): p is Player => p !== undefined)
+    return winners.find((w) => w.year === year)?.players ?? []
   }
 
   /** Number of tournaments won by a player. */
-  function getPlayerWins(playerId: number): number {
-    return winners.filter((w) => w.players.includes(playerId)).length
+  function getPlayerWins(player: Player): number {
+    return winners.filter((w) => w.players.some((p) => p.id === player.id)).length
   }
 
   return {

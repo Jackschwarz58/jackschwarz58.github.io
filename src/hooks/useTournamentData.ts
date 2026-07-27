@@ -1,12 +1,14 @@
 import {
     AllTimeLeaderboardEntry,
     AllTimeStats,
+    PairingLeaderboardEntry,
     Player,
+    ScrambleRoundLeaderboardEntry,
     Types,
     TournamentLeaderboardEntry,
     TournamentPlayerEntry,
 } from "../data/types.ts";
-import { tournaments, winners } from "../data/scores.ts";
+import { pairings, tournaments, winners } from "../data/scores.ts";
 import {players} from "../data/players.ts";
 
 export function useTournamentData() {
@@ -42,7 +44,7 @@ export function useTournamentData() {
     }
 
     /** All-time stats for one player across every tournament. */
-    function getAllTimeStats(playerId: number): AllTimeStats {
+    function getAllTimeStats(player: Player): AllTimeStats {
         const tournamentsPlayed: TournamentPlayerEntry[] = []
         let totalRounds = 0
         let totalGross = 0
@@ -51,7 +53,7 @@ export function useTournamentData() {
 
         for (const t of tournaments) {
             const scores = t.rounds
-                .map((r) => r.scores[playerId])
+                .map((r) => r.scores[player.id])
                 .filter((s): s is number => s !== undefined && s !== -1)
             if (!scores.length) continue
 
@@ -79,23 +81,51 @@ export function useTournamentData() {
     /** All-time leaderboard across every tournament, sorted by avg score per round. */
     function getAllTimeLeaderboard(): AllTimeLeaderboardEntry[] {
         return players
-            .map((player) => ({ ...player, ...getAllTimeStats(player.id) }))
+            .map((player) => ({ ...player, ...getAllTimeStats(player) }))
             .filter((p) => p.tournamentsCount > 0)
             .sort((a, b) => parseFloat(a.avg ?? '999') - parseFloat(b.avg ?? '999'))
     }
 
     /** Winners of a specific tournament by year, from the winners array. */
     function getTournamentWinners(year: number): Player[] {
-        const entry = winners.find((w) => w.year === year)
-        if (!entry) return []
-        return entry.players
-            .map((id) => getPlayerById(id))
-            .filter((p): p is Player => p !== undefined)
+        return winners.find((w) => w.year === year)?.players ?? []
     }
 
     /** Number of tournaments won by a player. */
-    function getPlayerWins(playerId: number): number {
-        return winners.filter((w) => w.players.includes(playerId)).length
+    function getPlayerWins(player: Player): number {
+        return winners.filter((w) => w.players.some((p) => p.id === player.id)).length
+    }
+
+    /** Scramble pairing leaderboard for a tournament year, sorted by lowest combined score. */
+    function getTournamentPairings(year: number): PairingLeaderboardEntry[] {
+        const entry = pairings.find((p) => p.year === year)
+        if (!entry) return []
+        return entry.groups
+            .map((group) => {
+                const played = group.scores.filter((s): s is number => s !== null)
+                const total = played.length ? played.reduce((sum, s) => sum + s, 0) : null
+                return { ...group, total }
+            })
+            .sort((a, b) => (a.total ?? Infinity) - (b.total ?? Infinity))
+    }
+
+    /** Top scramble round scores across every tournament, lowest first. */
+    function getScrambleRoundLeaderboard(limit = 10): ScrambleRoundLeaderboardEntry[] {
+        const entries: ScrambleRoundLeaderboardEntry[] = []
+        for (const {year, groups} of pairings) {
+            const yearWinners = winners.find((w) => w.year === year)?.players ?? []
+            for (const group of groups) {
+                const won = yearWinners.length > 0
+                    && yearWinners.length === group.players.length
+                    && group.players.every((p) => yearWinners.some((w) => w.id === p.id))
+                group.scores.forEach((score, i) => {
+                    if (score !== null && score !== undefined) {
+                        entries.push({year, day: i + 2, players: group.players, score, won})
+                    }
+                })
+            }
+        }
+        return entries.sort((a, b) => a.score - b.score).slice(0, limit)
     }
 
     return {
@@ -103,6 +133,8 @@ export function useTournamentData() {
         getTournamentById,
         getTournamentLeaderboard,
         getTournamentWinners,
+        getTournamentPairings,
+        getScrambleRoundLeaderboard,
         getPlayerWins,
         getAllTimeStats,
         getAllTimeLeaderboard,

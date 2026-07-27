@@ -10,8 +10,8 @@ export default function SummerTournaments() {
 
   const sorted = [...tournaments].sort((a, b) => b.year - a.year)
 
-  const mostWins = Math.max(0, ...players.map((p) => getPlayerWins(p.id)))
-  const allTimeLeaders = players.filter((p) => getPlayerWins(p.id) === mostWins && mostWins > 0)
+  const mostWins = Math.max(0, ...players.map((p) => getPlayerWins(p)))
+  const allTimeLeaders = players.filter((p) => getPlayerWins(p) === mostWins && mostWins > 0)
 
   return (
     <Stack gap="xl">

@@ -22,9 +22,10 @@ interface PlayerCardProps {
 
 export default function PlayerCard({ player, wins }: PlayerCardProps) {
   const { getAllTimeStats } = useTournamentData()
-  const stats = getAllTimeStats(player.id)
+  const stats = getAllTimeStats(player)
 
   const winLabel = wins === 1 ? '1 win' : `${wins} wins`
+  const handicapLabel = player.handicap === -1 ? '-' : player.handicap;
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -55,7 +56,7 @@ export default function PlayerCard({ player, wins }: PlayerCardProps) {
           <Text size="xs" c="dimmed" ta="center">Best Round</Text>
         </Stack>
         <Stack gap={2} align="center">
-          <Text size="xl" fw={700}>{player.handicap}</Text>
+          <Text size="xl" fw={700}>{handicapLabel}</Text>
           <Text size="xs" c="dimmed" ta="center">Handicap</Text>
         </Stack>
       </SimpleGrid>

@@ -30,7 +30,30 @@ export interface TournamentPlayerEntry {
 
 export interface Winners {
   year: number
-  players: number[]
+  players: Player[]
+}
+
+export interface PairingGroup {
+  id: number
+  players: Player[]
+  scores: (number | null)[]
+}
+
+export interface Pairing {
+  year: number
+  groups: PairingGroup[]
+}
+
+export interface PairingLeaderboardEntry extends PairingGroup {
+  total: number | null
+}
+
+export interface ScrambleRoundLeaderboardEntry {
+  year: number
+  day: number
+  players: Player[]
+  score: number
+  won: boolean
 }
 
 export interface AllTimeStats {

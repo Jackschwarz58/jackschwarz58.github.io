@@ -1,4 +1,9 @@
 import {Types, Winners} from "./types.ts";
+import {
+  JordanSimmons, TrevorReed, TannerReed, JackSchwarz, LandonWilguess, JesseGarner,
+  DiegoZavarce, PrestonProck, JackEdmunson, JacobHearn, GaryFox, ConnorSharp,
+  WillHadley, BryceBranson, McClainMueller, KeatonVanSickle, TrystanBrussard,
+} from "./players.ts";
 
 export const tournaments: Types[] = [
   {
@@ -78,26 +83,26 @@ export const tournaments: Types[] = [
 export const winners: Winners[] = [
   {
     year: 2021,
-    players: [1, 11, 29]
+    players: [JordanSimmons, JackEdmunson, TrystanBrussard]
   },
   {
     year: 2022,
-    players: [2, 3, 1, 7, 17]
+    players: [TrevorReed, TannerReed, JordanSimmons, DiegoZavarce, JacobHearn]
   },
   {
     year: 2023,
-    players: [3, 2, 1, 7, 9, 6, 19]
+    players: [TannerReed, TrevorReed, JordanSimmons, DiegoZavarce, PrestonProck, JesseGarner, GaryFox]
   },
   {
     year: 2024,
-    players: [3, 2, 1, 9, 7, 4]
+    players: [TannerReed, TrevorReed, JordanSimmons, PrestonProck, DiegoZavarce, JackSchwarz]
   },
   {
     year: 2025,
-    players: [24, 2, 9, 7, 15, 4]
+    players: [ConnorSharp, TrevorReed, PrestonProck, DiegoZavarce, WillHadley, JackSchwarz]
   },
   {
     year: 2026,
-    players: [9, 5, 30, 4, 6, 23, 14, 7]
+    players: [PrestonProck, LandonWilguess, KeatonVanSickle, JackSchwarz, JesseGarner, BryceBranson, McClainMueller, DiegoZavarce]
   },
 ]

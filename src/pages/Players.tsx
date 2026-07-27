@@ -7,8 +7,8 @@ export default function Players() {
   const board = getAllTimeLeaderboard()
 
   const sorted = [...board].sort((a, b) => {
-    const winsA = getPlayerWins(a.id)
-    const winsB = getPlayerWins(b.id)
+    const winsA = getPlayerWins(a)
+    const winsB = getPlayerWins(b)
     if (winsB !== winsA) return winsB - winsA
     const partsA = a.name.split(' ')
     const partsB = b.name.split(' ')
@@ -22,7 +22,7 @@ export default function Players() {
       <Title order={2}>Players</Title>
       <SimpleGrid cols={{ base: 1, lg: 3 }}>
         {sorted.map((player) => (
-          <PlayerCard key={player.id} player={player} wins={getPlayerWins(player.id)} />
+          <PlayerCard key={player.id} player={player} wins={getPlayerWins(player)} />
         ))}
       </SimpleGrid>
     </Stack>
