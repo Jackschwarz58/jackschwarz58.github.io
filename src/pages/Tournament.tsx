@@ -1,10 +1,19 @@
 import { useParams, Link } from 'react-router-dom'
 import {
-  Title, Text, Stack, Card, Table, Badge, Group, Anchor, Flex
+  Title, Text, Stack, Card, Table, Badge, Group, Anchor, Flex, Grid, Image
 } from '@mantine/core'
 import {useTournamentData} from "../hooks/useTournamentData.ts";
 import RoundCard from "./partials/RoundCard.tsx";
 import PairingRoundCard from "./partials/PairingRoundCard.tsx";
+
+const groupImages = import.meta.glob<string>(
+    '../assets/images/tournament-group-photos/*',
+    { eager: true, query: '?url', import: 'default' },
+)
+
+function getGroupImageUrl(year: number): string | undefined {
+  return groupImages[`../assets/images/tournament-group-photos/${year}.jpg`]
+}
 
 export default function Tournament() {
   const {
@@ -31,22 +40,38 @@ export default function Tournament() {
 
   return (
     <Stack gap="xl" style={{ margin: '1.5rem' }}>
-      <div>
-        <Anchor component={Link} to="/statistics" size="sm" c="dimmed">← All Tournaments</Anchor>
-        <Group mt="xs" align="baseline" gap="sm">
-          <Title order={2}>{tournament.name}</Title>
-          <Badge color="green" size="lg">{tournament.year}</Badge>
-        </Group>
-        <Text size="sm" c="dimmed">The Links Golf Course - Oklahoma City</Text>
-      </div>
+      <Grid>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <div>
+            <Anchor component={Link} to="/statistics" size="sm" c="dimmed">← All Tournaments</Anchor>
+            <Group mt="xs" align="baseline" gap="sm">
+              <Title order={2}>{tournament.name}</Title>
+              <Badge color="green" size="lg">{tournament.year}</Badge>
+            </Group>
+            <Text size="sm" c="dimmed">The Links Golf Course - Oklahoma City</Text>
+          </div>
 
-      <div>
-        <Title order={4} mb="sm">🏆 Winners</Title>
-        <Flex gap="md">{winners.map((winner) => (
-          <Text key={winner.id} size="xl">{winner.name}</Text>
-        ))}
-        </Flex>
-      </div>
+          <div>
+            <Title order={4} mb="sm">🏆 Winners</Title>
+            <Flex gap="md">{winners.map((winner) => (
+                <Text key={winner.id} size="xl">{winner.name}</Text>
+            ))}
+            </Flex>
+          </div>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 6 }}>
+          <Flex justify={{ base: 'center', sm: 'flex-end' }}>
+            <Image
+              radius="md"
+              h={{ base: 160, sm: 200 }}
+              w="100%"
+              maw={360}
+              fit="cover"
+              src={getGroupImageUrl(tournament.year)}
+          />
+          </Flex>
+        </Grid.Col>
+      </Grid>
 
       <div>
         <Title order={4} mb="sm">Scramble Pairings</Title>
