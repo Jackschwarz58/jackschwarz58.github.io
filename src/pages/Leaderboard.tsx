@@ -1,5 +1,6 @@
-import {Title, Card, Table, Badge, Text, Stack, Group} from '@mantine/core'
+import {Title, Card, Table, Badge, Text, Stack, Group, Anchor} from '@mantine/core'
 import {useTournamentData} from "../hooks/useTournamentData.ts";
+import {Link} from "react-router-dom";
 
 export default function Leaderboard() {
   const { getAllTimeLeaderboard, getPlayerWins, getScrambleRoundLeaderboard } = useTournamentData()
@@ -35,7 +36,11 @@ export default function Leaderboard() {
                 </Table.Td>
                 <Table.Td fw={700}>{round.score}</Table.Td>
                 <Table.Td fw={600}>{round.players.map((p) => p.name).join(' & ')}</Table.Td>
-                <Table.Td>{round.year}</Table.Td>
+                <Table.Td>
+                    <Anchor component={Link} to={`/tournament/invitational-${round.year}`} size="sm">
+                      {round.year}
+                  </Anchor>
+                </Table.Td>
                 <Table.Td>{round.won ?
                     <Group gap={6}><Badge color="yellow" size="sm">🏆</Badge></Group>
                     : ''}
